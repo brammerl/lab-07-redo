@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(cors());
 
+import request from 'superagent';
+
 let lat = '54.0293';
 let lon = '39.3020';
 const getLocation = async(city) => {
