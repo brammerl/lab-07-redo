@@ -7,8 +7,8 @@ const app = express();
 app.use(cors());
 const request = require('superagent');
 
-let lat = '54.0293';
-let lon = '39.3020';
+let lat = '45.5051';
+let lon = '-122.6750';
 const getLocation = async(city) => {
     try {
         const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.LOCATIONIQ_KEY}&q=${city}&format=json`);
@@ -75,7 +75,7 @@ app.get('/trails', (req, res) => {
     const trailsArray = getTrails();
     
     res.json(trailsArray);
-})
+});
  
 
 
