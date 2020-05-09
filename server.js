@@ -46,6 +46,12 @@ const getWeather = async() => {
     }
 };
 
+const getTrails = async() => {
+    try {
+        const data = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=10&key=${process.env.HIKING_KEY}`)
+    }
+}
+
 const parseWeather = (weather = {}) => weather
     .map(day => ({
         forecast: day.weather.description,
