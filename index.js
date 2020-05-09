@@ -7,11 +7,15 @@ const app = express();
 app.use(cors());
 const request = require('superagent');
 
+const locationKey = process.env.REACT_APP_LOCATIONIQ_KEY;
+const weatherKey = process.env.REACT_APP_WEATHERBIT_KEY;
+const trailsKey = process.env.REACT_APP_HIKING_KEY;
+
 let lat = '45.5051';
 let lon = '-122.6750';
 const getLocation = async(city) => {
     try {
-        const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.LOCATIONIQ_KEY}&q=${city}&format=json`);
+        const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${locationKey}&q=${city}&format=json`);
 
         return JSON.parse(data.text)[0];
     } catch (e) {
@@ -20,7 +24,7 @@ const getLocation = async(city) => {
 };
 
 const parseLocation = (location) => ({
-    formatted_query: location.dispaly_name,
+    formatted_query: location.display_name,
     latitude: location.lat,
     longitude: location.lon
 
@@ -28,7 +32,7 @@ const parseLocation = (location) => ({
 });
 
 app.get('/location', (req, res) => {
-    getLocation(req.query.search).then((locationRes) => {
+    getLocation('portland').then((locationRes) => {
         const response = parseLocation(locationRes);
 
         lat = response.latitude;
@@ -40,7 +44,7 @@ app.get('/location', (req, res) => {
 
 const getWeather = async() => {
     try {
-        const data = await request.get(`http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHERBIT_KEY}&lat=${lat}&lon=${lon}`);
+        const data = await request.get(`http://api.weatherbit.io/v2.0/forecast/daily?key=${weatherKey}&lat=${lat}&lon=${lon}`);
         return JSON.parse(data.text);
     } catch (e) {
         console.error(e);
@@ -63,7 +67,7 @@ app.get('/weather', (req, res) => {
 
 const getTrails = async() => {
     try {
-        const data = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=10&key=${process.env.HIKING_KEY}`);
+        const data = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=10&key=${trailsKey}`);
 
         return JSON.parse(data.trails);
     } catch (e) {
