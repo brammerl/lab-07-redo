@@ -32,7 +32,7 @@ const parseLocation = (location) => ({
 });
 
 app.get('/location', (req, res) => {
-    getLocation('portland').then((locationRes) => {
+    getLocation(req.query.search).then((locationRes) => {
         const response = parseLocation(locationRes);
 
         lat = response.latitude;
