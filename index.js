@@ -7,15 +7,16 @@ const app = express();
 app.use(cors());
 const request = require('superagent');
 
-const locationKey = process.env.REACT_APP_LOCATIONIQ_KEY;
-const weatherKey = process.env.REACT_APP_WEATHERBIT_KEY;
-const trailsKey = process.env.REACT_APP_HIKING_KEY;
+
+const weatherKey = process.env.WEATHERBIT_KEY;
+const trailsKey = process.env.HIKING_KEY;
 
 let lat = '45.5051';
 let lon = '-122.6750';
+
 const getLocation = async(city) => {
     try {
-        const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${locationKey}&q=${city}&format=json`);
+        const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.LOCATIONIQ_KEY}&q=${city}&format=json`);
 
         return JSON.parse(data.text)[0];
     } catch (e) {
@@ -32,14 +33,14 @@ const parseLocation = (location) => ({
 });
 
 app.get('/location', (req, res) => {
-    getLocation(req.query.search).then((locationRes) => {
-        const response = parseLocation(locationRes);
+    const locationRes = getLocation('Portland'); 
+    const response = parseLocation(locationRes);
 
-        lat = response.latitude;
-        lon = response.longitude;
+    lat = response.latitude;
+    lon = response.longitude;
 
-        res.json(response);
-    });
+    res.json(response);
+    
 });
 
 const getWeather = async() => {
