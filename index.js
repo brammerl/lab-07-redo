@@ -70,7 +70,7 @@ const getTrails = async() => {
     try {
         const data = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=10&key=${process.env.HIKING_KEY}`);
 
-        return JSON.parse(data.trails);
+        console.log(data);
     } catch (e) {
         console.error(e);
     }
