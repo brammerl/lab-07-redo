@@ -8,8 +8,8 @@ app.use(cors());
 const request = require('superagent');
 
 
-const weatherKey = process.env.WEATHERBIT_KEY;
-const trailsKey = process.env.HIKING_KEY;
+
+
 
 let lat = '45.5051';
 let lon = '-122.6750';
@@ -45,7 +45,7 @@ app.get('/location', (req, res) => {
 
 const getWeather = async() => {
     try {
-        const data = await request.get(`http://api.weatherbit.io/v2.0/forecast/daily?key=${weatherKey}&lat=${lat}&lon=${lon}`);
+        const data = await request.get(`http://api.weatherbit.io/v2.0/forecast/daily?key=${process.env.WEATHERBIT_KEY}&lat=${lat}&lon=${lon}`);
         return JSON.parse(data.text);
     } catch (e) {
         console.error(e);
@@ -68,7 +68,7 @@ app.get('/weather', (req, res) => {
 
 const getTrails = async() => {
     try {
-        const data = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=10&key=${trailsKey}`);
+        const data = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${lat}&lon=${lon}&maxDistance=10&key=${process.env.HIKING_KEY}`);
 
         return JSON.parse(data.trails);
     } catch (e) {
