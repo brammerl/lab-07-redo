@@ -33,13 +33,13 @@ const parseLocation = (location) => ({
 });
 
 app.get('/location', (req, res) => {
-    const locationRes = getLocation(req.query.search); 
-    const response = parseLocation(locationRes);
+    getLocation(req.query.search).then((locationRes) => {
+        const response = parseLocation(locationRes);
 
-    lat = response.latitude;
-    lon = response.longitude;
-
-    res.json(response);
+        lat = response.latitude;
+        lon = response.longitude;
+        res.json(response);
+    });
     
 });
 
